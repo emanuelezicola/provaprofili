@@ -4,12 +4,14 @@ import it.prova.provaprofili.models.Utente;
 import it.prova.provaprofili.repositories.UtenteRepository;
 import it.prova.provaprofili.services.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class UtenteServiceImpl implements UtenteService {
 
     private final UtenteRepository utenteRepository;

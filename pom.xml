@@ -62,7 +62,7 @@
                 <spring.datasource.username>root</spring.datasource.username>
                 <spring.datasource.password>root</spring.datasource.password>
                 <spring.datasource.url>jdbc:mysql://localhost:3306/prova_profili</spring.datasource.url>
-                <hibernate.ddl>create</hibernate.ddl>
+                <hibernate.ddl>none</hibernate.ddl>
                 <hibernate.logging.type>TRACE</hibernate.logging.type>
                 <hibernate.logging.SQL>DEBUG</hibernate.logging.SQL>
                 <server.port>8080</server.port>
