@@ -1,0 +1,42 @@
+server:
+  port: '@server.port@'
+
+
+pom:
+  spring.datasource.url: '@spring.datasource.url@'
+  profileName: '@profile.name@'
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: '@hibernate.logging.type@'
+        SQL: '@hibernate.logging.SQL@'
+
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: '@hibernate.ddl@'
+      use-new-id-generator-mappings: false
+    properties:
+      hibernate:
+        format_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: 'org.hibernate.dialect.MySQL8Dialect'
+    show-sql: true
+
+  datasource:
+    username: '@spring.datasource.username@'
+    password: '@spring.datasource.password@'
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 2000000
+      connection-timeout: 30000
+      pool-name: 'HikariPoolBooks'
+    driver-class-name: 'com.mysql.jdbc.Driver'
+    url: '@spring.datasource.url@'
