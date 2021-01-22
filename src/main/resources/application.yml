@@ -38,5 +38,5 @@ spring:
       max-lifetime: 2000000
       connection-timeout: 30000
       pool-name: 'HikariPoolBooks'
-    driver-class-name: 'com.mysql.jdbc.Driver'
+    driver-class-name: 'com.mysql.cj.jdbc.Driver'
     url: '@spring.datasource.url@'
