@@ -4,14 +4,15 @@ import it.prova.provaprofili.dto.CommonUserDto;
 import it.prova.provaprofili.dto.UtenteRegistrazioneDto;
 import it.prova.provaprofili.models.Utente;
 import it.prova.provaprofili.services.UtenteService;
-import it.prova.provaprofili.utils.dtovalidations.DtoValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/utente")
@@ -19,9 +20,9 @@ import java.util.Objects;
 public class UtenteController {
 
     private final UtenteService utenteService;
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Autowired
-
     public UtenteController(UtenteService utenteService) {
         this.utenteService = utenteService;
     }
@@ -31,18 +32,15 @@ public class UtenteController {
     public ResponseEntity<Object> registrazione(@RequestBody  UtenteRegistrazioneDto utenteDto) {
 
         //controllo validità dto
-        //TODO capire se si può fare senza forzare il cast.. inizializzare mappaErrori a Map dà problema con ResponseEntity<Object> in quanto interface
-        LinkedHashMap<String, String> mappaErrori = (LinkedHashMap<String, String>) DtoValidations.checkRegistrazione(utenteDto);
+        Set<ConstraintViolation<UtenteRegistrazioneDto>> constraintViolations = validator.validate(utenteDto);
 
-        if (!Objects.isNull(mappaErrori)) {
-            return ResponseEntity.badRequest().body(mappaErrori);
+        if (!constraintViolations.isEmpty() || !utenteDto.getPassword().equals(utenteDto.getPasswordRepeat())) {
+            return ResponseEntity.badRequest().body("Errore durante il salvataggio dei dati. Compilare tutti i campi correttamente");
         }
 
         Utente utenteDaRegistrare = new Utente(null, utenteDto.getNome(), utenteDto.getCognome(), utenteDto.getEmail(), utenteDto.getPassword(), LocalDate.now());
 
         utenteService.crea(utenteDaRegistrare);
-
-        //TODO controlli dopo creazione per conversione verso dto
 
         return ResponseEntity.ok(new CommonUserDto(utenteDaRegistrare.getId(), utenteDaRegistrare.getNome(), utenteDaRegistrare.getCognome(), utenteDaRegistrare.getEmail(), utenteDaRegistrare.getDataRegistrazione()));
     }
